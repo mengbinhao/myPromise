@@ -5,15 +5,15 @@ function MyPromise(executor) {
 
     const resolve = (value) => {
         if (this.status === 'pending') {
-            this.value = value
             this.status = 'resolved'
+            this.value = value
         }
     }
 
     const reject = (reason) => {
         if (this.status === 'pending') {
-            this.reason = reason
             this.status = 'rejected'
+            this.reason = reason
         }
     }
     executor(resolve, reject)

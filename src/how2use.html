@@ -13,9 +13,8 @@
         const p = () => {
             return new Promise((resolve, reject) => {
                 console.log('start promise')
-                //setTimeout( function () {
-                    resolve('resolve')
-                //}, 2000)
+                resolve('resolve')
+                console.log('continue promise')
             })
         }
 

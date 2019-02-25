@@ -5,19 +5,19 @@ function MyPromise(executor) {
     this.onResolvedCbs = []
     this.onRejectedCbs = []
 
-    let resolve = (value) => {
+    const resolve = (value) => {
         if (this.status === 'pending') {
-            this.value = value
             this.status = 'resolved'
-            this.onResolvedCb.forEach(fn => fn())
+            this.value = value
+            this.onResolvedCbs.forEach(fn => fn())
         }
     }
 
-    let reject = (reason) => {
+    const reject = (reason) => {
         if (this.status === 'pending') {
-            this.reason = reason
             this.status = 'rejected'
-            this.onRejectedCb.forEach(fn => fn())
+            this.reason = reason
+            this.onRejectedCbs.forEach(fn => fn())
         }
     }
 
@@ -37,82 +37,54 @@ MyPromise.prototype.then = function (onFullfilled, onRejected) {
 
     if (this.status === 'resolved') {
         promise2 = new MyPromise((resolve, reject) => {
-            try {
-                let x = onFullfilled(this.value)
-                resolvePromise(promise2, x, resolve, reject)
-            } catch (e) {
-                reject(e)
-            }
+            setTimeout(() => {
+                try {
+                    let x = onFullfilled(this.value)
+                    resolve(x)
+                } catch (e) {
+                    reject(e)
+                }
+            })
         })
     }
 
     if (this.status === 'rejected') {
         promise2 = new MyPromise((resolve, reject) => {
-            try {
-                let x = onRejected(this.reason)
-                resolvePromise(promise2, x, resolve, reject)
-            } catch (e) {
-                reject(e)
-            }
+            setTimeout(() => {
+                try {
+                    let x = onRejected(this.reason)
+                    resolve(x)
+                } catch (e) {
+                    reject(e)
+                }
+            })
         })
     }
 
     if (this.status === 'pending') {
         promise2 = new MyPromise((resolve, reject) => {
             this.onResolvedCbs.push(() => {
-                try {
-                    let x = onFullfilled(this.value)
-                    resolvePromise(promise2, x, resolve, reject)
-                } catch (e) {
-                    reject(e)
-                }
+                setTimeout(() => {
+                    try {
+                        let x = onFullfilled(this.value)
+                        resolve(x)
+                    } catch (e) {
+                        reject(e)
+                    }
+                })
+            })
+
+            this.onRejectedCbs.push(() => {
+                setTimeout(() => {
+                    try {
+                        let x = onRejected(this.reason)
+                        resolve(x)
+                    } catch (e) {
+                        reject(e)
+                    }
+                })
             })
         })
-
-        this.onRejectedCbs.push(() => {
-            try {
-                let x = onRejected(this.value)
-                resolvePromise(promise2, x, resolve, reject)
-            } catch (e) {
-                reject(e)
-            }
-        })
     }
-
     return promise2
 }
-
-function resolvePromise(promise2, x, resolve, reject) {
-    if (promise2 === x) {
-        return reject(new TypeError('circular reference'))
-    }
-    let called
-    if (x && (typeof x === 'object') || typeof x === 'function') {
-        try {
-            let then = x.then
-            if (typeof then === 'function') {
-                then.call(x, function (y) {
-                    if (called) return
-                    called = true
-                    //recursion
-                    //y is previous promise's return
-                    resolvePromise(promise2, y, resolve, reject)
-                }, function (err) {
-                    if (called) return
-                    called = true
-                    reject(err)
-                })
-            } else {
-                reject(err)
-            }
-        } catch (e) {
-            if (called) return
-            called = true
-            reject(err)
-        }
-    } else {
-        resolve(x)
-    }
-}
-
-module.export = MyPromise

@@ -1,11 +1,11 @@
 var promisesAplusTests = require("promises-aplus-tests")
-var MyPromise = require("../src/mypromise_5")
+var MyPromise = require("../src/mypromise_8")
 
 MyPromise.deferred = function () {
-    let dfd = {};
+    let dfd = {}
     dfd.promise = new MyPromise(function (resolve, reject) {
-        dfd.resolve = resolve;
-        dfd.reject = reject;
+        dfd.resolve = resolve
+        dfd.reject = reject
     });
     return dfd
 }

@@ -9,16 +9,14 @@
 </head>
 
 <body>
-    <script type="text/javascript" src="./mypromise_4.js"></script>
+    <script type="text/javascript" src="./mypromise_6.js"></script>
     <script type="text/javascript">
-        const p = () => {
-            return new MyPromise((resolve, reject) => {
-                console.log('start promise')
-                resolve('resolve')
-            })
-        }
+        const p = new MyPromise((resolve, reject) => {
+            console.log('start promise')
+            //resolve('resolve lalala')
+        })
 
-        p().then((value) => {
+        p.then((value) => {
             console.log('sucess ' + value)
         }, (reson) => {
             console.log('error ' + reson)
@@ -27,5 +25,4 @@
         console.log('end')
     </script>
 </body>
-
 </html>

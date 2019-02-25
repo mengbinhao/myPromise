@@ -24,7 +24,12 @@ function MyPromise(executor) {
             }
         })
     }
-    executor(resolve, reject)
+
+    try {
+        executor(resolve, reject)
+    } catch (e) {
+        reject(e)
+    }
 }
 
 MyPromise.prototype.then = function(onFullfilled, onRejected) {
@@ -45,3 +50,4 @@ MyPromise.prototype.then = function(onFullfilled, onRejected) {
         onRejected(this.reason)
     }
 }
+

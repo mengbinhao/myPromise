@@ -2,11 +2,15 @@ function MyPromise(executor) {
     this.status = 'pending'
 
     const resolve = () => {
-        this.status = 'resolved'
+        if (this.status === 'pending') {
+            this.status = 'resolved'
+        }
     }
 
     const reject = () => {
-        this.status = 'rejected'
+        if (this.status === 'pending') {
+            this.status = 'reject'
+        }
     }
     executor(resolve, reject)
 }
