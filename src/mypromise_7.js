@@ -120,7 +120,7 @@ function resolvePromise(promise2, x, resolve, reject) {
         }
     } else {
         //normal value
-        return resolve(x)
+        resolve(x)
     }
 }
 

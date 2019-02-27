@@ -61,7 +61,7 @@ class MyPromise {
                 }
             } else {
                 //normal value
-                return resolve(x)
+                resolve(x)
             }
         }
 
