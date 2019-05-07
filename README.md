@@ -1,6 +1,10 @@
 # MyPromise
+### why promise
+- [whypromise](./src/whypromise.js)
+- [whypromiseAdvance](./src/whypromiseAdvance.js)
+- [whypromiseAdvanceSequence](./src/whypromiseAdvanceSequence.js)
 
-### [how to use](./src/how2use.html)
+### [how to use](./src/how2use.js)
 1. Promise is a constructor，insstanse has then mehtod
 2. while new Promise, pass an executor, it is involed immediatety
 3. executor receives two params(resolve / reject), they are functions
